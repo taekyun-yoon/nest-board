@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { Controller, Get, HttpException, HttpStatus, Query } from '@nestjs/common';
+import { Controller, Get, HttpException, HttpStatus, Logger, Query } from '@nestjs/common';
 import { AppService } from './app.service';
 import { Ip } from './decorators/ip.decorator';
 
@@ -7,11 +7,19 @@ import { Ip } from './decorators/ip.decorator';
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
+  private readonly logger = new Logger(AppController.name);
+
   @Get()
   getHello(@Ip() ip: string): string {
     console.log(`${ip}`);
-    // return this.appService.getHello();
-    throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
+    this.logger.log(ip);
+    this.logger.warn(ip);
+    this.logger.debug(ip);
+    this.logger.error(ip);
+    this.logger.fatal(ip);
+
+    return this.appService.getHello();
+    // throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
   }
 
   @Get('name')
