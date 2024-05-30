@@ -1,3 +1,4 @@
+import { async } from './../node_modules/rxjs/src/internal/scheduler/async';
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -5,6 +6,7 @@ import { BoardModule } from './board/board.module';
 import { LoggingMiddleware } from './middleware/logging.middleware';
 import ConfigModule  from './config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ConfigService } from '@nestjs/config';
 
 @Module({
   imports: [
@@ -17,8 +19,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
-      entities: [__dirname + '/**/*.entity.{.ts,.js}'],
-      synchronize: false,
+      entities: [__dirname + '/**/*.entity{.ts,.js}'],
+      synchronize: false
     }),
   ],
   controllers: [AppController],
