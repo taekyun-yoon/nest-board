@@ -10,11 +10,11 @@ export default class UserSeeder implements Seeder {
         const repository = dataSource.getRepository(User);
 
         await repository.insert([
-            {
-                username: 'fastcampus',
-                name: 'hong gildong',
-                password: 'fastcampus1234',
-            },
+        {
+            username: 'user1',
+            name: 'user user',
+            password: 'user1234',
+        },
         ]);
     }
 }
