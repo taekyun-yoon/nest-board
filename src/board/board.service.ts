@@ -1,7 +1,11 @@
 /* eslint-disable prettier/prettier */
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateBoardDto } from './dto/create-board.dto';
 import { UpdateBoardDto } from './dto/update-board.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { User } from 'src/entity/user.entity';
+import { Repository } from 'typeorm';
+import { Board } from 'src/entity/board.entity';
 
 @Injectable()
 export class BoardService {
@@ -40,20 +44,37 @@ export class BoardService {
             content: 'Content 8',
         },
     ];
-    findAll() {
+    constructor(
+        @InjectRepository(User)
+        private userRepository: Repository<User>,
+        @InjectRepository(Board)
+        private boardRepository: Repository<Board>
+    ){}
+
+    async findAll() {
         this.getNextId();
-        return this.boards;
+        return await this.boardRepository.find();
     }
 
-    find(id: number) {
-        const index = this.boards.findIndex(board => board.id === id);
-        return this.boards[index];
+    async find(id: number) {
+        const board = await this.boardRepository.findOne({
+            where: {
+                id
+            },
+            relations: {
+                user: true 
+            }
+        });
+
+        if(!board) throw new HttpException("Not Found", HttpStatus.NOT_FOUND);
+
+        return board;
     }
-    create(data: CreateBoardDto) {
-        const newBoard = { id: this.getNextId(), ...data};
-        this.boards.push(newBoard);
-        return newBoard;
-    }
+    async create(data: CreateBoardDto) {
+        const board = this.boardRepository.create(data);
+        console.log(board);
+        return await this.boardRepository.save(board);
+    } 
 
     update(id: number, data: UpdateBoardDto) {
         const idx = this.boards.findIndex((board) => board.id === id);
