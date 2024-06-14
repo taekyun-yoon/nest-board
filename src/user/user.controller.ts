@@ -17,6 +17,6 @@ export class UserController {
 
     @Get()
     getUser(){
-
+        return this.userService.getUser();
     }
 }
