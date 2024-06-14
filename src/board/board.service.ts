@@ -76,16 +76,18 @@ export class BoardService {
         return await this.boardRepository.save(board);
     } 
 
-    update(id: number, data: UpdateBoardDto) {
-        const idx = this.boards.findIndex((board) => board.id === id);
-        if(idx > -1) {
-            this.boards[idx] = {
-                ...this.boards[idx],
-                ...data,
-            };
-            return this.boards[idx];
+    async update(id: number, data: UpdateBoardDto) {
+        const board = await this.boardRepository.findOne({
+            where: {
+                id
+            }
+        });
+        if(data.contents) {
+            board.contents = data.contents;
+            return await this.boardRepository.save(board);
+        }else{
+            return null;
         }
-        return null;
     }
 
     delete(id: number) {
