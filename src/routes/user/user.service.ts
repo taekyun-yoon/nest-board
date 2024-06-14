@@ -10,7 +10,7 @@ export class UserService {
         @InjectRepository(User)
         private userRepository: Repository<User>
     ){}
- 
+
     async getUser(){
         const qb = this.userRepository.createQueryBuilder();
 
