@@ -7,6 +7,7 @@ import { LoggingMiddleware } from './middleware/logging.middleware';
 import ConfigModule  from './config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigService } from '@nestjs/config';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { ConfigService } from '@nestjs/config';
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: false
     }),
+    UserModule,
   ],
   controllers: [AppController],
   providers: [AppService],
