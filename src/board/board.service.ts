@@ -90,17 +90,19 @@ export class BoardService {
         }
     }
 
-    delete(id: number) {
-        const idx = this.boards.findIndex((board) => board.id === id);
-        if(idx > -1) {
-            const deleteBoard = this.boards[idx];
-            this.boards.splice(idx, 1);
-            return deleteBoard;
-        }
-        return null;
+    async delete(id: number) {
+        const board = await this.getBoardById(id);
+        return await this.boardRepository.remove(board);
     }
 
     getNextId(){
         return this.boards.sort((a,b) => (a.id - b.id))[0].id + 1;
+    }
+    async getBoardById(id: number)  {
+        return await this.boardRepository.findOne({
+            where: {
+                id
+            }
+        });
     }
 }
