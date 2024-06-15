@@ -3,7 +3,7 @@ import { IsNotEmpty, IsString, MaxLength, MinLength } from "class-validator";
 
 export class CreateUserDto {
     @IsNotEmpty()
-    @MinLength(8)
+    @MinLength(4)
     @MaxLength(20)
     @ApiProperty({
         description: '회원 아이디',
