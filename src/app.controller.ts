@@ -1,8 +1,9 @@
 /* eslint-disable prettier/prettier */
-import { Controller, Get, HttpException, HttpStatus, Logger, Query } from '@nestjs/common';
+import { Controller, Get, HttpException, HttpStatus, Logger, Post, Query, Request, UseGuards } from '@nestjs/common';
 import { AppService } from './app.service';
 import { Ip } from './decorators/ip.decorator';
 import { ConfigService } from '@nestjs/config';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller()
 export class AppController {
@@ -34,5 +35,12 @@ export class AppController {
     @Query('name') name: string
   ): string {
     return `${name} hello `;
+  }
+
+
+  @UseGuards(AuthGuard('local'))
+  @Post('login')
+  async login(@Request() req){
+    return req.user;
   }
 }

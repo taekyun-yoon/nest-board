@@ -38,9 +38,7 @@ export class UserService {
 
     async login(data: LoginUserDto) {
         const { username, password } = data;
-        const user = await this.userRepository.findOneBy({
-            username,
-        })
+        const user = await this.getUserByUsername(username);
         if(!user) throw new HttpException('NOT_FOUNT', HttpStatus.NOT_FOUND);
 
         const match = await compare(password, user.password);
@@ -63,5 +61,9 @@ export class UserService {
     async encryptPassword(password: string) {
         const DEFAULT_SALT = 11;
         return hash(password, DEFAULT_SALT);
+    }
+
+    async getUserByUsername(username: string) {
+        return await this.userRepository.findOneBy({username});
     }
 }
