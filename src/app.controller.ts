@@ -3,7 +3,6 @@ import { Controller, Get, HttpException, HttpStatus, Logger, Post, Query, Reques
 import { AppService } from './app.service';
 import { Ip } from './decorators/ip.decorator';
 import { ConfigService } from '@nestjs/config';
-import { AuthGuard } from '@nestjs/passport';
 import { LocalAuthGuard } from './auth/local-auth.guard';
 import { AuthService } from './auth/auth.service';
 import { JwtAuthGuard } from './auth/jwt-auth.guard';

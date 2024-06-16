@@ -1,7 +1,7 @@
 import { CreateUserDto } from './dto/create-user.dto';
 import { LoginUserDto } from './dto/login-user.dto';
 import { UserService } from './user.service';
-import { Body, Controller, Get, Post, ValidationPipe } from '@nestjs/common';
+import { Body, ClassSerializerInterceptor, Controller, Get, Post, UseInterceptors, ValidationPipe } from '@nestjs/common';
 
 @Controller('user')
 export class UserController {
@@ -21,6 +21,8 @@ export class UserController {
     }
 
     @Get()
+    //객체 직렬화 불필요
+    // @UseInterceptors(ClassSerializerInterceptor)
     getUser(){
         return this.userService.getUser();
     }
