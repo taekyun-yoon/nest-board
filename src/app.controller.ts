@@ -11,8 +11,6 @@ import { JwtAuthGuard } from './auth/jwt-auth.guard';
 export class AppController {
   constructor(
     private readonly appService: AppService,
-    private readonly AppService: AppService,
-    private readonly configService: ConfigService,
     private readonly authService: AuthService
     ) {}
 
@@ -20,15 +18,6 @@ export class AppController {
 
   @Get()
   getHello(@Ip() ip: string): string {
-    console.log(`${ip}`);
-    this.logger.log(ip);
-    this.logger.warn(ip);
-    this.logger.debug(ip);
-    this.logger.error(ip);
-    this.logger.fatal(ip);
-
-    console.log(this.configService.get('ENVIRONMENT'))
-
     return this.appService.getHello();
     // throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
   }
@@ -37,7 +26,7 @@ export class AppController {
   getName(
     @Query('name') name: string
   ): string {
-    return `${name} hello `;
+    return `${name} hello`;
   }ç
 
 
