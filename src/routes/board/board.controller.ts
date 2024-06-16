@@ -13,9 +13,7 @@ import { UserInfo } from 'src/decorators/user-info.decorator';
 export class BoardController {
     constructor(
         private readonly boardService: BoardService
-    ) {
-
-    }
+    ) {}
 
     @Get()
     findAll(@Ip() ip: string) {

@@ -79,12 +79,12 @@
   },
   "jest": {
     "moduleFileExtensions": [
-      "js",
+      "js", 
       "json",
       "ts"
     ],
     "roots": [
-      "src"
+      "src" 
     ],
     "testRegex": ".*\\.spec\\.ts$",
     "transform": {
