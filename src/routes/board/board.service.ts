@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, UnauthorizedException } from '@nestjs/common';
 import { CreateBoardDto } from './dto/create-board.dto';
 import { UpdateBoardDto } from './dto/update-board.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -71,27 +71,28 @@ export class BoardService {
         return board;
     }
     async create(data: CreateBoardDto) {
-        const board = this.boardRepository.create(data);
-        console.log(board);
-        return await this.boardRepository.save(board);
+        return this.boardRepository.save(data);
     } 
 
-    async update(id: number, data: UpdateBoardDto) {
-        const board = await this.boardRepository.findOne({
-            where: {
-                id
-            }
-        });
+    async update(userId: number, id: number, data: UpdateBoardDto) {
+        const board = await this.getBoardById(id);
+
+        if(!board) throw new HttpException('NOT_FOUNT', HttpStatus.NOT_FOUND);
+        if(userId != board.userId) throw new UnauthorizedException();
+
         if(data.contents) {
             board.contents = data.contents;
-            return await this.boardRepository.save(board);
+            return this.boardRepository.update(id, {
+                ...data
+            });
         }else{
             return null;
         }
     }
 
-    async delete(id: number) {
+    async delete(userId: number ,id: number) {
         const board = await this.getBoardById(id);
+        if(userId != board.userId) throw new UnauthorizedException();
         return await this.boardRepository.remove(board);
     }
 
